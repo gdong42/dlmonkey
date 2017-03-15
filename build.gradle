@@ -28,7 +28,9 @@ dependencies {
 	compile(
 			'org.springframework.boot:spring-boot-starter-thymeleaf',
             'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-devtools'
+            'org.springframework.boot:spring-boot-devtools',
+            'org.apache.httpcomponents:httpclient:4.5.3',
+			'commons-validator:commons-validator:1.6'
     )
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
