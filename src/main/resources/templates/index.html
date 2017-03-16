@@ -16,7 +16,7 @@
 
     <h1 class="text-center">Download Instagram Photo</h1>
 
-    <form action="/instagram/image" method="post" >
+    <form action="/instagram/image" method="post">
         <div class="form-group">
 
             <label for="inputUrl">Enter Instagram Photo URL</label>
@@ -25,13 +25,29 @@
                    th:value="${instagram.url}"
             />
             <p th:text="${instagram.url}"/>
-            <p th:text="'parsed img url = ' + ${imgUrl}"/>
+            <p th:text="'parsed img url = ' + ${image.url}"/>
         </div>
         <div class="form-group">
             <button type="submit"
-                    class="btn btn-primary btn-lg center-block">Go!</button>
+                    class="btn btn-primary btn-lg center-block">Go!
+            </button>
         </div>
     </form>
+    <div class="row img-container">
+        <div class="img-container col-sm-6" th:if="${image.url} != null">
+            <img class="img-responsive center-block" th:src="${image.url}"
+                 th:alt="${image.description}"/>
+            <br/>
+            <div class="text-center">
+                <a th:href="${image.url}"
+                   class="btn btn-primary btn-lg" download="">Download
+                    Photo</a>
+            </div>
+        </div>
+        <div class="p-container col-sm-6">
+
+        </div>
+    </div>
 </div>
 
 </body>

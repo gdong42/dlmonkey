@@ -1,6 +1,7 @@
 package com.dlmonkey.controller;
 
 import com.dlmonkey.model.Instagram;
+import com.dlmonkey.model.InstagramImage;
 import com.dlmonkey.service.InstagramParser;
 import com.dlmonkey.util.ValidationUtils;
 import org.slf4j.Logger;
@@ -41,18 +42,17 @@ public class IndexController {
     logger.info(" ==== {} / {} requested instagram url: {}",
         request.getRemoteAddr(), ipAddress, instagram.getUrl());
     final String url = instagram.getUrl();
-    String imageUrl = "";
+    InstagramImage image = new InstagramImage();
     if (ValidationUtils.isValidInstagramUrl(url)) {
 
-      String html = instagramParser.parseImageUrl(url);
-      imageUrl = html; //TODO
+      image = instagramParser.parseImageUrl(url);
 
-      logger.info("    parsed image url is {}", imageUrl);
+      logger.info("    parsed image url is {}", image);
     } else {
       logger.warn("    requested for URL {} from IP {} is INVALID", url,
           request.getRemoteAddr());
     }
-    model.addAttribute("imgUrl", imageUrl);
+    model.addAttribute("image", image);
     return "index";
   }
 }
