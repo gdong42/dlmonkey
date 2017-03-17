@@ -36,8 +36,8 @@ deploy_staging:
   environment:
     name: staging
     url: http://localhost:9876
-    only:
-      - master
+  only:
+    - master
   tags:
     - staging
 
