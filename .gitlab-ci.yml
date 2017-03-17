@@ -1,0 +1,27 @@
+image: docker:latest
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: gitlab-ci
+
+stages:
+  - build
+  - package
+  - deploy
+
+gradle-build:
+  image: frolvlad/alpine-oraclejdk8:latest
+  stage: build
+  script: "./gradlew clean build"
+  artifacts:
+    paths:
+      - build/libs/*.jar
+
+docker-build:
+  stage: package
+  script:
+    - docker build -t registry.gitlab.com/gdong/dlmonkey .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker push registry.gitlab.com/gdong/dlmonkey
