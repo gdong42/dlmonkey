@@ -27,12 +27,12 @@ public class DlmonkeyApplication {
     };
   }
 
-  @Bean
-  public EmbeddedServletContainerCustomizer containerCustomizer() {
-    return container -> {
-      final ErrorPage notFoundPage = new ErrorPage(HttpStatus.NOT_FOUND,
-          "/404.html");
-      container.addErrorPages(notFoundPage);
-    };
-  }
+//  @Bean
+//  public EmbeddedServletContainerCustomizer containerCustomizer() {
+//    return container -> {
+//      final ErrorPage notFoundPage = new ErrorPage(HttpStatus.NOT_FOUND,
+//          "/404.html");
+//      container.addErrorPages(notFoundPage);
+//    };
+//  }
 }

@@ -24,4 +24,12 @@ public class InstagramImage {
   public void setDescription(String description) {
     this.description = description;
   }
+
+  @Override
+  public String toString() {
+    return "InstagramImage{" +
+        "url='" + url + '\'' +
+        ", description='" + description + '\'' +
+        '}';
+  }
 }

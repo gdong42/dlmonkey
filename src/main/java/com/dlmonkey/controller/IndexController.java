@@ -30,8 +30,14 @@ public class IndexController {
   @GetMapping("/")
   public String index(Model model) {
     model.addAttribute("instagram", new Instagram());
+    model.addAttribute("image", new InstagramImage());
     return "index";
   }
+
+//  @GetMapping("/instagram/image")
+//  public String showImg() {
+//    return "redirect:index";
+//  }
 
   @PostMapping("/instagram/image")
   public String image(@ModelAttribute Instagram instagram, Model model,
@@ -46,11 +52,14 @@ public class IndexController {
     if (ValidationUtils.isValidInstagramUrl(url)) {
 
       image = instagramParser.parseImageUrl(url);
-
+      if (image == null || image.getUrl() == null) {
+        model.addAttribute("message", "Sorry, we don't seem to know the URL");
+      }
       logger.info("    parsed image url is {}", image);
     } else {
       logger.warn("    requested for URL {} from IP {} is INVALID", url,
           request.getRemoteAddr());
+      model.addAttribute("message", "Please input the entire instagram photo URL including 'https://' ");
     }
     model.addAttribute("image", image);
     return "index";
