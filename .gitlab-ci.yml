@@ -25,3 +25,15 @@ docker-build:
     - docker build -t registry.gitlab.com/gdong/dlmonkey .
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker push registry.gitlab.com/gdong/dlmonkey
+
+deploy_prod:
+  stage: deploy
+  script:
+    - echo "Deploying to production server"
+  environment:
+    name: prod
+    url: http://www.dlmonkey.com
+  when: manual
+  only:
+    - master
+
