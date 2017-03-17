@@ -12,7 +12,7 @@ stages:
   - deploy
 
 gradle-build:
-  image: frolvlad/alpine-oraclejdk8:latest
+  image: openjdk:8-jdk
   stage: build
   script: "./gradlew clean build"
   artifacts:
