@@ -38,6 +38,8 @@ deploy_staging:
     url: http://localhost:9876
     only:
       - master
+  tags:
+    - staging
 
 deploy_prod:
   stage: deploy
