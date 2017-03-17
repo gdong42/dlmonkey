@@ -26,6 +26,19 @@ docker-build:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker push registry.gitlab.com/gdong/dlmonkey
 
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy to staging server"
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/gdong/dlmonkey
+    - docker run -dp 8080:9876 --name dlmonkey -t registry.gitlab.com/gdong/dlmonkey
+  environment:
+    name: staging
+    url: http://localhost:9876
+    only:
+      - master
+
 deploy_prod:
   stage: deploy
   script:
