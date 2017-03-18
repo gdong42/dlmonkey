@@ -1,9 +1,9 @@
-#image: docker:latest
+image: docker:latest
 #services:
 #  - docker:dind
 #
 #image: frolvlad/alpine-oraclejdk8
-image: openjdk:8-jdk
+#image: openjdk:8-jdk
 
 variables:
   DOCKER_DRIVER: overlay
@@ -15,7 +15,7 @@ stages:
   - deploy
 
 gradle-build:
-  # image: openjdk:8-jdk
+  image: openjdk:8-jdk
   stage: build
   script: "./gradlew clean build"
   artifacts:
