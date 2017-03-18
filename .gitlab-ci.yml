@@ -49,7 +49,7 @@ deploy_production:
     - docker pull registry.gitlab.com/gdong/dlmonkey
     - docker run -dp 8080:9876 --name dlmonkey -t registry.gitlab.com/gdong/dlmonkey
   environment:
-    name: prod
+    name: production
     url: http://www.dlmonkey.com
   when: manual
   only:
