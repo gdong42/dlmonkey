@@ -41,14 +41,19 @@ deploy_staging:
   tags:
     - staging
 
-deploy_prod:
+deploy_production:
   stage: deploy
   script:
     - echo "Deploying to production server"
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker pull registry.gitlab.com/gdong/dlmonkey
+    - docker run -dp 8080:9876 --name dlmonkey -t registry.gitlab.com/gdong/dlmonkey
   environment:
     name: prod
     url: http://www.dlmonkey.com
   when: manual
   only:
     - master
-
+  tags:
+    - production
+    - docker
