@@ -1,6 +1,5 @@
 package com.dlmonkey.service;
 
-import com.dlmonkey.model.Instagram;
 import com.dlmonkey.model.InstagramImage;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -11,12 +10,12 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -33,15 +32,22 @@ public class InstagramParser {
 
   private HttpClient client;
 
-  public InstagramParser() {
-    RequestConfig config = RequestConfig.custom()
+  @Autowired
+  public InstagramParser(@Value("${app.http.proxy}") boolean useHttpProxy) {
+
+    RequestConfig.Builder configBuilder = RequestConfig.custom()
         .setConnectTimeout(TIMEOUT)
         .setConnectionRequestTimeout(TIMEOUT)
-        .setSocketTimeout(TIMEOUT)
-        .setProxy(new HttpHost("127.0.0.1", 8123, "http"))
-        .build();
+        .setSocketTimeout(TIMEOUT);
+
+    if (useHttpProxy) {
+      configBuilder.setProxy(new HttpHost("127.0.0.1", 8123, "http"));
+    }
+
+    logger.info("========> useHttpProxy = " + useHttpProxy);
+
     client = HttpClientBuilder.create()
-        .setDefaultRequestConfig(config)
+        .setDefaultRequestConfig(configBuilder.build())
         .build();
   }
 

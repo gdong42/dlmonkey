@@ -9,7 +9,7 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay
-  SPRING_PROFILES_ACTIVE: gitlab-ci
+  SPRING_PROFILES_ACTIVE: production
 
 stages:
   - build
@@ -53,7 +53,7 @@ deploy_production:
     - docker stop dlmonkey || true && docker rm dlmonkey || true
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/gdong/dlmonkey
-    - docker run -dp 9876:8080 --name dlmonkey -t registry.gitlab.com/gdong/dlmonkey
+    - docker run -dp 9876:8080 --name dlmonkey -t registry.gitlab.com/gdong/dlmonkey --spring.profiles.active=$SPRING_PROFILES_ACTIVE
   environment:
     name: production
     url: http://www.dlmonkey.com

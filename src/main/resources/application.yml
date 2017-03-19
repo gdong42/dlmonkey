@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: dlmonkey
+  profiles:
+    default: development
+app:
+  http:
+    proxy: true
+
+---
+
+spring:
+  profiles: production
+app:
+  http:
+    proxy: false
