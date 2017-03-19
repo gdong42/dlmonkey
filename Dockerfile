@@ -2,7 +2,7 @@ FROM frolvlad/alpine-oraclejdk8:latest
 
 MAINTAINER hotterd@gmail.com
 
-EXPOSE 9876
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "dlmonkey.jar"]
 
