@@ -3,8 +3,8 @@ before_script:
   - docker info
 
     #image: docker:latest
-#services:
-#  - docker:dind
+services:
+  - docker:dind
 #
 #image: frolvlad/alpine-oraclejdk8
 #image: openjdk:8-jdk
