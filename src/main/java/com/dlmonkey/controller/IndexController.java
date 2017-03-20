@@ -2,6 +2,7 @@ package com.dlmonkey.controller;
 
 import com.dlmonkey.model.Instagram;
 import com.dlmonkey.model.InstagramImage;
+import com.dlmonkey.model.InstagramMedia;
 import com.dlmonkey.service.InstagramParser;
 import com.dlmonkey.util.ValidationUtils;
 import org.slf4j.Logger;
@@ -34,13 +35,13 @@ public class IndexController {
     return "index";
   }
 
-//  @GetMapping("/instagram/image")
-//  public String showImg() {
-//    return "redirect:index";
-//  }
+  @GetMapping("/instagram")
+  public String showImg() {
+    return "redirect:index";
+  }
 
-  @PostMapping("/instagram/image")
-  public String image(@ModelAttribute Instagram instagram, Model model,
+  @PostMapping("/instagram")
+  public String getMedia(@ModelAttribute Instagram instagram, Model model,
       HttpServletRequest request) {
 
     String ipAddress = request.getHeader("X-FORWARDED-FOR");
@@ -48,20 +49,19 @@ public class IndexController {
     logger.info(" ==== {} / {} requested instagram url: {}",
         request.getRemoteAddr(), ipAddress, instagram.getUrl());
     final String url = instagram.getUrl();
-    InstagramImage image = new InstagramImage();
     if (ValidationUtils.isValidInstagramUrl(url)) {
-
-      image = instagramParser.parseImageUrl(url);
-      if (image == null || image.getUrl() == null) {
-        model.addAttribute("message", "Sorry, we don't seem to know the URL");
+      InstagramMedia media = instagramParser.parseMedia(url);
+      if (media != null) {
+        media.populate(model);
+        return "index";
       }
-      logger.info("    parsed image url is {}", image);
+      model.addAttribute("message", "Sorry, we don't seem to know the URL");
     } else {
       logger.warn("    requested for URL {} from IP {} is INVALID", url,
           request.getRemoteAddr());
-      model.addAttribute("message", "Please input the entire instagram photo URL including 'https://' ");
+      model.addAttribute("message",
+          "Please input the entire instagram photo URL including 'https://' ");
     }
-    model.addAttribute("image", image);
     return "index";
   }
 }

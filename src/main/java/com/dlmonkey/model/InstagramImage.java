@@ -1,35 +1,16 @@
 package com.dlmonkey.model;
 
+import org.springframework.ui.Model;
+
 /**
  * @author gdong
  */
-public class InstagramImage {
-
-  private String url;
-
-  private String description;
-
-  public String getUrl() {
-    return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
+public class InstagramImage extends InstagramMedia {
 
   @Override
-  public String toString() {
-    return "InstagramImage{" +
-        "url='" + url + '\'' +
-        ", description='" + description + '\'' +
-        '}';
+  public void populate(Model model) {
+    model.addAttribute("type", "image");
+    model.addAttribute("url", this.getUrl());
+    model.addAttribute("description", this.getDescription());
   }
 }

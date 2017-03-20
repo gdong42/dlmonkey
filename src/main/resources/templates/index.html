@@ -16,9 +16,8 @@
 
     <h1 class="text-center">Download Instagram Photo</h1>
 
-    <form action="/instagram/image" method="post">
+    <form action="/instagram" method="post">
         <div class="form-group">
-
             <label for="inputUrl">Enter Instagram Photo URL</label>
             <input type="text" class="form-control input-lg" id="inputUrl"
                    placeholder="Enter Instagram URL here.." name="url"
@@ -35,14 +34,28 @@
         <div class="col-sm-12" th:if="${message} != null">
             <p th:text="${message}"></p>
         </div>
-        <div class="img-container col-sm-6" th:if="${image.url} != null">
-            <img class="img-responsive center-block" th:src="${image.url}"
-                 th:alt="${image.description}"/>
+        <div class="img-container col-sm-6" th:if="${type} == 'image'">
+            <img class="img-responsive center-block" th:src="${url}"
+                 th:alt="${description}"/>
             <br/>
             <div class="text-center">
-                <a th:href="${image.url}"
+                <a th:href="${url}"
                    class="btn btn-primary btn-lg" download="">Download
                     Photo</a>
+            </div>
+        </div>
+        <div class="img-container col-sm-6" th:if="${type} == 'video'">
+            <video th:src="${url}" th:poster="${posterUrl}"
+                   th:height="${height}" th:width="${width}" controls="true">
+                Sorry, your browser doesn't support embedded videos,
+                but don't worry, you can <a th:href="${url}">download it</a>
+                and watch it with your favorite video player!
+            </video>
+            <br/>
+            <div class="text-center">
+                <a th:href="${url}"
+                   class="btn btn-primary btn-lg" download="">Download
+                    Video</a>
             </div>
         </div>
         <div class="p-container col-sm-6">
