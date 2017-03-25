@@ -36,8 +36,7 @@ public class ValidationUtils {
       return false;
     }
     String host = inputUrl.getHost();
-    if (host == null || !INSTAGRAM_URL_HOST_WWW.equals(host) || !INSTAGRAM_URL_HOST_NON_WWW
-        .equals(host)) {
+    if (!INSTAGRAM_URL_HOST_WWW.equals(host) && !INSTAGRAM_URL_HOST_NON_WWW.equals(host)) {
       return false;
     }
     String path = inputUrl.getPath();

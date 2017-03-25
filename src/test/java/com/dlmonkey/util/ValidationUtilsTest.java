@@ -16,7 +16,7 @@ public class ValidationUtilsTest {
 
     assertThat(isValidInstagramUrl("http://instagram.com")).isFalse();
 
-    assertThat(isValidInstagramUrl("http://instagram.com/p")).isFalse();
+    assertThat(isValidInstagramUrl("http://instagram.com/p/BLj_bbaDzta")).isTrue();
 
     assertThat(isValidInstagramUrl(
         "https://www.instagram.com/p/BLj_bbaDzta/?taken-by=totto.31")).isTrue();
