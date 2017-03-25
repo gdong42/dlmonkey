@@ -15,7 +15,9 @@ public class ValidationUtils {
   private static UrlValidator urlValidator = new UrlValidator(
       Arrays.asList("http", "https").toArray(new String[2]));
 
-  private static final String INSTAGRAM_URL_HOST = "www.instagram.com";
+  private static final String INSTAGRAM_URL_HOST_WWW = "www.instagram.com";
+
+  private static final String INSTAGRAM_URL_HOST_NON_WWW = "instagram.com";
 
   private static final String INSTAGRAM_URL_PATH_PREFIX = "/p";
 
@@ -34,7 +36,8 @@ public class ValidationUtils {
       return false;
     }
     String host = inputUrl.getHost();
-    if (host == null || !INSTAGRAM_URL_HOST.equals(host)) {
+    if (host == null || !INSTAGRAM_URL_HOST_WWW.equals(host) || !INSTAGRAM_URL_HOST_NON_WWW
+        .equals(host)) {
       return false;
     }
     String path = inputUrl.getPath();
