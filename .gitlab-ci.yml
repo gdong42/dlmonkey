@@ -50,9 +50,9 @@ deploy_production:
   stage: deploy
   script:
     - echo "Deploying to production server"
-    - docker stop dlmonkey || true && docker rm dlmonkey || true
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/gdong/dlmonkey
+    - docker stop dlmonkey || true && docker rm dlmonkey || true
     - docker run -dp 127.0.0.1:9876:8080 --name dlmonkey -t registry.gitlab.com/gdong/dlmonkey --spring.profiles.active=$SPRING_PROFILES_ACTIVE
   environment:
     name: production
