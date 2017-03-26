@@ -35,20 +35,21 @@ public class IndexController {
     return "index";
   }
 
-  @GetMapping("/instagram")
-  public String showImg() {
-    return "redirect:index";
-  }
+//  @GetMapping("/instagram")
+//  public String showImg() {
+//    return "redirect:index";
+//  }
 
-  @PostMapping("/instagram")
-  public String getMedia(@ModelAttribute Instagram instagram, Model model,
+  @GetMapping("/instagram")
+  public String getMedia(Instagram instagram, Model model,
       HttpServletRequest request) {
 
     String ipAddress = request.getHeader("X-FORWARDED-FOR");
 
-    logger.info(" ==== {} / {} requested instagram url: {}",
-        request.getRemoteAddr(), ipAddress, instagram.getUrl());
     final String url = instagram.getUrl();
+    logger.info(" ==== {} / {} requested instagram url: {}",
+        request.getRemoteAddr(), ipAddress, url);
+
     if (ValidationUtils.isValidInstagramUrl(url)) {
       InstagramMedia media = instagramParser.parseMedia(url);
       if (media != null) {
