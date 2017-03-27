@@ -10,6 +10,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.github.hierynomus.license" version "0.13.1"
+}
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 
@@ -34,4 +38,8 @@ dependencies {
             'org.jsoup:jsoup:1.10.2'
     )
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+license {
+    exclude '**/*.html'
 }
