@@ -214,6 +214,8 @@ public abstract class InstagramMedia {
 
   private String description;
 
+  private String embedHtml;
+
   /**
    * populates attributes into the given model using this media.
    *
@@ -237,4 +239,11 @@ public abstract class InstagramMedia {
     this.description = description;
   }
 
+  public String getEmbedHtml() {
+    return embedHtml;
+  }
+
+  public void setEmbedHtml(String embedHtml) {
+    this.embedHtml = embedHtml;
+  }
 }

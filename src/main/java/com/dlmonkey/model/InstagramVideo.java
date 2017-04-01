@@ -230,6 +230,7 @@ public class InstagramVideo extends InstagramMedia {
     model.addAttribute("height", this.getWidth());
     model.addAttribute("secureUrl", this.getSecureUrl());
     model.addAttribute("posterUrl", this.getPosterUrl());
+    model.addAttribute("embedHtml", this.getEmbedHtml());
   }
 
   public String getType() {

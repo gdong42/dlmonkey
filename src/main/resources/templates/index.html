@@ -23,6 +23,7 @@
       ga('create', 'UA-96062011-1', 'auto');
       ga('send', 'pageview');
 
+
     </script>
 </head>
 <body>
@@ -62,9 +63,8 @@
             <p th:text="${message}"></p>
         </div>
         <div class="img-container col-sm-6" th:if="${type} == 'image'">
-            <img class="img-responsive center-block" th:src="${url}"
-                 th:alt="${description}"/>
-            <br/>
+            <div th:utext="${embedHtml}">
+            </div>
             <div class="text-center">
                 <a th:href="${url}"
                    class="btn btn-primary btn-lg" download="">Download
@@ -72,12 +72,8 @@
             </div>
         </div>
         <div class="img-container col-sm-6" th:if="${type} == 'video'">
-            <video th:src="${url}" th:poster="${posterUrl}"
-                   th:height="${height}" th:width="${width}" controls="true">
-                Sorry, your browser doesn't support embedded videos,
-                but don't worry, you can <a th:href="${url}">download it</a>
-                and watch it with your favorite video player!
-            </video>
+            <div th:utext="${embedHtml}">
+            </div>
             <br/>
             <div class="text-center">
                 <a th:href="${url}"
@@ -85,9 +81,7 @@
                     Video</a>
             </div>
         </div>
-        <div class="p-container col-sm-6">
 
-        </div>
     </div>
 </div>
 

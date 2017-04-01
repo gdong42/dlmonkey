@@ -215,5 +215,6 @@ public class InstagramImage extends InstagramMedia {
     model.addAttribute("type", "image");
     model.addAttribute("url", this.getUrl());
     model.addAttribute("description", this.getDescription());
+    model.addAttribute("embedHtml", this.getEmbedHtml());
   }
 }

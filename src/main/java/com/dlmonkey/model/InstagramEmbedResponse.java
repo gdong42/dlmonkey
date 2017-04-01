@@ -201,101 +201,164 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.dlmonkey.service;
+package com.dlmonkey.model;
 
-import com.dlmonkey.model.InstagramEmbedResponse;
-import com.dlmonkey.model.InstagramMedia;
-import com.dlmonkey.util.InstagramMediaFactory;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 /**
  * @author gdong
  */
-@Service
-public class InstagramParser {
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+public class InstagramEmbedResponse {
 
-  private static final Logger logger = LoggerFactory
-      .getLogger(InstagramParser.class);
+  private String authorId;
 
-  private static final int TIMEOUT = 10 * 1000;  // in ms
+  private String authorName;
 
-  private HttpClient client;
+  private String authorUrl;
 
-  @Bean
-  private ClientHttpRequestFactory getClientHttpRequestFactory() {
-    logger.info(" ==== creating a new request factor ...");
-    return new HttpComponentsClientHttpRequestFactory(client);
+  private String height;
+
+  private String html;
+
+  private String mediaId;
+
+  private String providerName;
+
+  private String providerUrl;
+
+  private String title;
+
+  private String type;
+
+  private String thumbnailUrl;
+
+  private String thumbnailWidth;
+
+  private String thumbnailHeight;
+
+  private String version;
+
+  private String width;
+
+  public String getAuthorId() {
+    return authorId;
   }
 
-  @Autowired
-  public InstagramParser(@Value("${app.http.proxy}") boolean useHttpProxy) {
-
-    RequestConfig.Builder configBuilder = RequestConfig.custom()
-        .setConnectTimeout(TIMEOUT)
-        .setConnectionRequestTimeout(TIMEOUT)
-        .setSocketTimeout(TIMEOUT);
-
-    if (useHttpProxy) {
-      // fuck GFW, I have to use a proxy to test the app locally.
-      configBuilder.setProxy(new HttpHost("127.0.0.1", 8123, "http"));
-    }
-
-    logger.info("========> useHttpProxy = " + useHttpProxy);
-
-    client = HttpClientBuilder.create()
-        .setDefaultRequestConfig(configBuilder.build())
-        .build();
+  public void setAuthorId(String authorId) {
+    this.authorId = authorId;
   }
 
-  public InstagramMedia parseMedia(String url) {
-    HttpGet request = new HttpGet(url);
-    String html;
-    try {
-      HttpResponse response = client.execute(request);
-      html = EntityUtils.toString(response.getEntity());
-    } catch (IOException e) {
-      logger.error("Failed to parse response for url. ", e);
-      return null;
-    }
-
-    return withEmbeddedHtml(url,
-        InstagramMediaFactory.createInstagramMedia(Jsoup.parse(html)));
+  public String getAuthorName() {
+    return authorName;
   }
 
-  private InstagramMedia withEmbeddedHtml(String source,
-      InstagramMedia instagramMedia) {
-
-    final String apiUrl = constructEmbedApiUrl(source);
-    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
-
-    InstagramEmbedResponse resp = restTemplate
-        .getForObject(apiUrl, InstagramEmbedResponse.class);
-    instagramMedia.setEmbedHtml(resp.getHtml());
-
-    return instagramMedia;
+  public void setAuthorName(String authorName) {
+    this.authorName = authorName;
   }
 
-  private static String constructEmbedApiUrl(String source) {
-    return "https://api.instagram.com/oembed/?url=" + source;
+  public String getAuthorUrl() {
+    return authorUrl;
+  }
+
+  public void setAuthorUrl(String authorUrl) {
+    this.authorUrl = authorUrl;
+  }
+
+  public String getHeight() {
+    return height;
+  }
+
+  public void setHeight(String height) {
+    this.height = height;
+  }
+
+  public String getHtml() {
+    return html;
+  }
+
+  public void setHtml(String html) {
+    this.html = html;
+  }
+
+  public String getMediaId() {
+    return mediaId;
+  }
+
+  public void setMediaId(String mediaId) {
+    this.mediaId = mediaId;
+  }
+
+  public String getProviderName() {
+    return providerName;
+  }
+
+  public void setProviderName(String providerName) {
+    this.providerName = providerName;
+  }
+
+  public String getProviderUrl() {
+    return providerUrl;
+  }
+
+  public void setProviderUrl(String providerUrl) {
+    this.providerUrl = providerUrl;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getThumbnailUrl() {
+    return thumbnailUrl;
+  }
+
+  public void setThumbnailUrl(String thumbnailUrl) {
+    this.thumbnailUrl = thumbnailUrl;
+  }
+
+  public String getThumbnailWidth() {
+    return thumbnailWidth;
+  }
+
+  public void setThumbnailWidth(String thumbnailWidth) {
+    this.thumbnailWidth = thumbnailWidth;
+  }
+
+  public String getThumbnailHeight() {
+    return thumbnailHeight;
+  }
+
+  public void setThumbnailHeight(String thumbnailHeight) {
+    this.thumbnailHeight = thumbnailHeight;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public String getWidth() {
+    return width;
+  }
+
+  public void setWidth(String width) {
+    this.width = width;
   }
 }
