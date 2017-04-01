@@ -41,5 +41,5 @@ dependencies {
 }
 
 license {
-    exclude '**/*.html'
+    excludes(['**/*.html', '**/*.yml', '**/*.png', '**/*.ico'])
 }

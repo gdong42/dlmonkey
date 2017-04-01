@@ -201,101 +201,35 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.dlmonkey.service;
+package com.dlmonkey.functional;
 
-import com.dlmonkey.model.InstagramEmbedResponse;
 import com.dlmonkey.model.InstagramMedia;
-import com.dlmonkey.util.InstagramMediaFactory;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dlmonkey.service.InstagramParser;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 /**
  * @author gdong
  */
-@Service
-public class InstagramParser {
-
-  private static final Logger logger = LoggerFactory
-      .getLogger(InstagramParser.class);
-
-  private static final int TIMEOUT = 10 * 1000;  // in ms
-
-  private HttpClient client;
-
-  @Bean
-  private ClientHttpRequestFactory getClientHttpRequestFactory() {
-    logger.info(" ==== creating a new request factor ...");
-    return new HttpComponentsClientHttpRequestFactory(client);
-  }
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class InstagramParserTest {
 
   @Autowired
-  public InstagramParser(@Value("${app.http.proxy}") boolean useHttpProxy) {
+  private InstagramParser instagramParser;
 
-    RequestConfig.Builder configBuilder = RequestConfig.custom()
-        .setConnectTimeout(TIMEOUT)
-        .setConnectionRequestTimeout(TIMEOUT)
-        .setSocketTimeout(TIMEOUT);
+  @Test
+  public void testParseMedia() throws Exception {
 
-    if (useHttpProxy) {
-      // fuck GFW, I have to use a proxy to test the app locally.
-      configBuilder.setProxy(new HttpHost("127.0.0.1", 8123, "http"));
-    }
-
-    logger.info("========> useHttpProxy = " + useHttpProxy);
-
-    client = HttpClientBuilder.create()
-        .setDefaultRequestConfig(configBuilder.build())
-        .build();
-  }
-
-  public InstagramMedia parseMedia(String url) {
-    HttpGet request = new HttpGet(url);
-    String html;
-    try {
-      HttpResponse response = client.execute(request);
-      html = EntityUtils.toString(response.getEntity());
-    } catch (IOException e) {
-      logger.error("Failed to parse response for url. ", e);
-      return null;
-    }
-
-    return withEmbeddedHtml(url,
-        InstagramMediaFactory.createInstagramMedia(Jsoup.parse(html)));
-  }
-
-  private InstagramMedia withEmbeddedHtml(String source,
-      InstagramMedia instagramMedia) {
-
-    final String apiUrl = constructEmbedApiUrl(source);
-    RestTemplate restTemplate = new RestTemplate(getClientHttpRequestFactory());
-
-    InstagramEmbedResponse resp = restTemplate
-        .getForObject(apiUrl, InstagramEmbedResponse.class);
-    instagramMedia.setEmbedHtml(resp.getHtml());
-
-    return instagramMedia;
-  }
-
-  private static String constructEmbedApiUrl(String source) {
-    return "https://api.instagram.com/oembed/?url=" + source;
+    InstagramMedia media = instagramParser.parseMedia(
+        "https://www.instagram.com/p/BLIC5x6glCy/?taken-by=lokistagram");
+    System.out.println(media);
+    assertThat(media.getUrl()).isNotEmpty();
+    assertThat(media.getEmbedHtml()).isNotEmpty();
   }
 }
